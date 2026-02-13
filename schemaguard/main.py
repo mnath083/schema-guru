@@ -8,7 +8,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 from schemaguard.compatibility_engine import check_compatibility
-from schemaguard.reporter import build_report, issue
+from schemaguard.reporter import CompatibilityIssue, build_report, issue
 from schemaguard.rules import normalize_mode
 from schemaguard.schema_loader import load_schema_upload, validate_avro_schema
 
@@ -20,6 +20,12 @@ STATIC_DIR = BASE_DIR / "static"
 app = FastAPI(title="SchemaGuard", version="2.0.0")
 app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
+
+
+def _error_status_code(errors: list[CompatibilityIssue]) -> int:
+    if any(err.issueType == "FILE_TOO_LARGE" for err in errors):
+        return 413
+    return 400
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -51,11 +57,11 @@ async def compare(
 
     old_schema, old_errors = await load_schema_upload(old_schema_file, "OldSchema")
     if old_errors:
-        return JSONResponse(status_code=400, content=build_report(old_errors))
+        return JSONResponse(status_code=_error_status_code(old_errors), content=build_report(old_errors))
 
     new_schema, new_errors = await load_schema_upload(new_schema_file, "NewSchema")
     if new_errors:
-        return JSONResponse(status_code=400, content=build_report(new_errors))
+        return JSONResponse(status_code=_error_status_code(new_errors), content=build_report(new_errors))
 
     old_validation_errors = validate_avro_schema(old_schema, "OldSchema")
     if old_validation_errors:
@@ -67,4 +73,3 @@ async def compare(
 
     errors = check_compatibility(old_schema=old_schema, new_schema=new_schema, mode=normalized_mode)
     return JSONResponse(status_code=200, content=build_report(errors))
-

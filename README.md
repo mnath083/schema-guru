@@ -1,6 +1,6 @@
 # SchemaGuard
 
-SchemaGuard is an internal web application that compares two Avro schema JSON files and reports strict compatibility errors.
+SchemaGuard is a web application that compares two Avro schema JSON files and reports strict compatibility errors.
 
 ## Stack
 
@@ -26,6 +26,7 @@ schemaguard/
     app.js
     styles.css
 tests/
+  conftest.py
   test_compatibility_rules.py
 run.py
 requirements.txt
@@ -49,6 +50,11 @@ Form fields:
 - `old_schema_file`: old Avro schema JSON file
 - `new_schema_file`: new Avro schema JSON file
 - `mode`: `backward`, `forward`, `full`
+
+Notes:
+
+- Uploaded schema size is capped at `1 MiB` per file.
+- Oversized files return HTTP `413` with `FILE_TOO_LARGE`.
 
 Compatible response:
 
@@ -92,13 +98,3 @@ Incompatible response:
 ```bash
 pytest -q
 ```
-
-Included edge-case tests:
-
-- Primitive type changes
-- Union mismatches
-- Nested record failures
-- Missing default value
-- Enum symbol removal
-- Logical type change
-

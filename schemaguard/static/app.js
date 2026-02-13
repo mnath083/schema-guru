@@ -14,13 +14,33 @@ function clearResults() {
   toggleRawButton.textContent = "Show Raw JSON";
 }
 
+function createParagraph(text, className = "") {
+  const p = document.createElement("p");
+  if (className) {
+    p.className = className;
+  }
+  p.textContent = text;
+  return p;
+}
+
 function renderCompatible() {
-  summary.innerHTML = '<p class="badge badge-ok">Compatible</p><p>No compatibility errors found.</p>';
+  const badge = createParagraph("Compatible", "badge badge-ok");
+  const message = createParagraph("No compatibility errors found.");
+  summary.appendChild(badge);
+  summary.appendChild(message);
 }
 
 function renderErrors(data) {
   const totalErrors = typeof data.totalErrors === "number" ? data.totalErrors : (data.errors || []).length;
-  summary.innerHTML = `<p class="badge badge-bad">Incompatible</p><p>Total Errors: <strong>${totalErrors}</strong></p>`;
+
+  const badge = createParagraph("Incompatible", "badge badge-bad");
+  const total = document.createElement("p");
+  total.append("Total Errors: ");
+  const strong = document.createElement("strong");
+  strong.textContent = String(totalErrors);
+  total.appendChild(strong);
+  summary.appendChild(badge);
+  summary.appendChild(total);
 
   (data.errors || []).forEach((err, index) => {
     const wrapper = document.createElement("details");
@@ -30,16 +50,50 @@ function renderErrors(data) {
     }
 
     const summaryEl = document.createElement("summary");
-    summaryEl.innerHTML = `<span class="issue">${err.issueType || "UNKNOWN"}</span> <span class="path">${err.path || "unknown path"}</span>`;
+
+    const issueSpan = document.createElement("span");
+    issueSpan.className = "issue";
+    issueSpan.textContent = err.issueType || "UNKNOWN";
+
+    const pathSpan = document.createElement("span");
+    pathSpan.className = "path";
+    pathSpan.textContent = err.path || "unknown path";
+
+    summaryEl.appendChild(issueSpan);
+    summaryEl.appendChild(pathSpan);
     wrapper.appendChild(summaryEl);
 
     const body = document.createElement("div");
     body.className = "error-body";
-    body.innerHTML = `
-      <p><strong>Description:</strong> ${err.description || ""}</p>
-      <p><strong>Writer Type:</strong> <code>${err.writerType || "unknown"}</code></p>
-      <p><strong>Reader Type:</strong> <code>${err.readerType || "unknown"}</code></p>
-    `;
+
+    const description = document.createElement("p");
+    const descriptionStrong = document.createElement("strong");
+    descriptionStrong.textContent = "Description:";
+    description.appendChild(descriptionStrong);
+    description.append(` ${err.description || ""}`);
+
+    const writer = document.createElement("p");
+    const writerStrong = document.createElement("strong");
+    writerStrong.textContent = "Writer Type:";
+    const writerCode = document.createElement("code");
+    writerCode.textContent = err.writerType || "unknown";
+    writer.appendChild(writerStrong);
+    writer.append(" ");
+    writer.appendChild(writerCode);
+
+    const reader = document.createElement("p");
+    const readerStrong = document.createElement("strong");
+    readerStrong.textContent = "Reader Type:";
+    const readerCode = document.createElement("code");
+    readerCode.textContent = err.readerType || "unknown";
+    reader.appendChild(readerStrong);
+    reader.append(" ");
+    reader.appendChild(readerCode);
+
+    body.appendChild(description);
+    body.appendChild(writer);
+    body.appendChild(reader);
+
     wrapper.appendChild(body);
     errorList.appendChild(wrapper);
   });
@@ -71,7 +125,7 @@ form.addEventListener("submit", async (event) => {
   compareButton.textContent = "Comparing...";
   resultSection.classList.remove("hidden");
   clearResults();
-  summary.innerHTML = "<p>Running compatibility checks...</p>";
+  summary.appendChild(createParagraph("Running compatibility checks..."));
 
   try {
     const response = await fetch("/compare", {
@@ -99,4 +153,3 @@ form.addEventListener("submit", async (event) => {
     compareButton.textContent = "Compare";
   }
 });
-

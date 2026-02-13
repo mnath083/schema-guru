@@ -13,6 +13,10 @@ except Exception:  # pragma: no cover
     parse_schema = None
 
 
+MAX_SCHEMA_BYTES = 1024 * 1024  # 1 MiB
+CHUNK_SIZE = 64 * 1024
+
+
 def parse_json_bytes(payload: bytes) -> tuple[Any | None, str | None]:
     try:
         text = payload.decode("utf-8")
@@ -25,9 +29,25 @@ def parse_json_bytes(payload: bytes) -> tuple[Any | None, str | None]:
         return None, f"Invalid JSON: {exc.msg} (line {exc.lineno}, column {exc.colno})."
 
 
+async def _read_upload_with_limit(file: UploadFile, limit_bytes: int) -> tuple[bytes | None, str | None]:
+    chunks: list[bytes] = []
+    total = 0
+
+    while True:
+        chunk = await file.read(CHUNK_SIZE)
+        if not chunk:
+            break
+        total += len(chunk)
+        if total > limit_bytes:
+            return None, f"Schema file exceeds max size of {limit_bytes} bytes."
+        chunks.append(chunk)
+
+    return b"".join(chunks), None
+
+
 async def load_schema_upload(file: UploadFile, schema_label: str) -> tuple[Any | None, list[CompatibilityIssue]]:
     try:
-        payload = await file.read()
+        payload, size_error = await _read_upload_with_limit(file, MAX_SCHEMA_BYTES)
     except Exception as exc:
         return None, [
             issue(
@@ -36,6 +56,17 @@ async def load_schema_upload(file: UploadFile, schema_label: str) -> tuple[Any |
                 writer_type="file",
                 reader_type="readable-file",
                 description=f"Failed to read uploaded file: {exc}",
+            )
+        ]
+
+    if size_error:
+        return None, [
+            issue(
+                path=schema_label,
+                issue_type="FILE_TOO_LARGE",
+                writer_type="file",
+                reader_type=f"<= {MAX_SCHEMA_BYTES} bytes",
+                description=size_error,
             )
         ]
 
@@ -82,4 +113,3 @@ def validate_avro_schema(schema: Any, schema_label: str) -> list[CompatibilityIs
             )
         ]
     return []
-

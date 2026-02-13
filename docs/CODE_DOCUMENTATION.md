@@ -28,14 +28,14 @@ Main request flow:
 
 ## 2) Entry Points
 
-### `/Users/manjunath/Desktop/Schema Guru/run.py`
+### `/Schema Guru/run.py`
 
 Development launcher using `uvicorn.run("schemaguard.main:app", ...)`.
 
 - Defaults: `--host 127.0.0.1`, `--port 8000`
 - `--reload` enables auto-reload for development.
 
-### `/Users/manjunath/Desktop/Schema Guru/schemaguard/main.py`
+### `/Schema Guru/schemaguard/main.py`
 
 Creates the FastAPI app and routes:
 
@@ -59,7 +59,7 @@ HTTP status behavior:
 
 ## 3) Input Loading and Validation
 
-### `/Users/manjunath/Desktop/Schema Guru/schemaguard/schema_loader.py`
+### `/Schema Guru/schemaguard/schema_loader.py`
 
 Purpose: make uploads safe and parseable before compatibility logic runs.
 
@@ -84,7 +84,7 @@ Why this matters:
 
 ## 4) Compatibility Engine (Core Logic)
 
-### `/Users/manjunath/Desktop/Schema Guru/schemaguard/compatibility_engine.py`
+### `/Schema Guru/schemaguard/compatibility_engine.py`
 
 This is the main recursive evaluator. It compares writer schema vs reader schema according to Avro compatibility rules.
 
@@ -136,7 +136,7 @@ If unsupported or unresolved, engine emits structured issues.
 
 ## 5) Rule Helpers
 
-### `/Users/manjunath/Desktop/Schema Guru/schemaguard/rules.py`
+### `/Schema Guru/schemaguard/rules.py`
 
 Contains shared rule helpers:
 
@@ -155,7 +155,7 @@ Promotion matrix currently includes:
 
 ## 6) Report Model
 
-### `/Users/manjunath/Desktop/Schema Guru/schemaguard/reporter.py`
+### `/Schema Guru/schemaguard/reporter.py`
 
 Defines normalized error payload shape:
 
@@ -176,7 +176,7 @@ Defines normalized error payload shape:
 
 ## 7) Frontend Rendering
 
-### `/Users/manjunath/Desktop/Schema Guru/schemaguard/templates/index.html`
+### `/Schema Guru/schemaguard/templates/index.html`
 
 Contains upload form and result section:
 
@@ -184,7 +184,7 @@ Contains upload form and result section:
 - mode select: `backward|forward|full`
 - result panel + raw JSON toggle
 
-### `/Users/manjunath/Desktop/Schema Guru/schemaguard/static/app.js`
+### `/Schema Guru/schemaguard/static/app.js`
 
 Client behavior:
 
@@ -194,7 +194,7 @@ Client behavior:
 4. Shows/hides raw JSON response.
 5. Handles network failure by injecting `REQUEST_FAILED` pseudo-error.
 
-### `/Users/manjunath/Desktop/Schema Guru/schemaguard/static/styles.css`
+### `/Schema Guru/schemaguard/static/styles.css`
 
 Defines UI layout, badges, cards, and raw JSON block styling.
 
@@ -220,7 +220,7 @@ Common `issueType` values emitted by code:
 
 ## 9) Tests
 
-### `/Users/manjunath/Desktop/Schema Guru/tests/test_compatibility_rules.py`
+### `/Schema Guru/tests/test_compatibility_rules.py`
 
 Current test coverage validates:
 

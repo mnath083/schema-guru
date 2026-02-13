@@ -1,0 +1,9 @@
+{
+  "name": "pegaguru-site",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "build:blog": "node scripts/build-blog.mjs",
+    "build:pdf": "node scripts/notion-notes-to-pdf.mjs"
+  }
+}

@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pega Constellation Practical Guide | PegaGuru Blog</title>
+    <meta name="description" content="Enterprise-focused Constellation architecture guidance for senior Pega teams." />
+    <link rel="canonical" href="https://pegaguru.com/blog/pega-constellation-practical-guide.html" />
+    <meta property="og:title" content="Pega Constellation Practical Guide | PegaGuru Blog" />
+    <meta property="og:description" content="Enterprise-focused Constellation architecture guidance for senior Pega teams." />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://pegaguru.com/blog/pega-constellation-practical-guide.html" />
+    <meta property="og:image" content="https://pegaguru.com/assets/og-blog-default.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,500;9..144,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../assets/css/styles.css" />
+  </head>
+  <body data-analytics-page="blog_post" data-analytics-slug="pega-constellation-practical-guide">
+    
+    <header class="site-header">
+      <div class="container nav-wrap">
+        <a class="brand" href="../index.html">PegaGuru</a>
+        <button class="menu-toggle" aria-label="Toggle navigation" aria-expanded="false">Menu</button>
+        <nav class="site-nav" aria-label="Main Navigation">
+          <a href="../index.html">Home</a>
+          <a href="../lsa-readiness-roadmap.html">LSA Readiness Path</a>
+          <a href="../mock-interview.html">Mock Interviews</a>
+          <a href="../blog/index.html" aria-current="page">Blog</a>
+          <a href="../why-senior-devs-fail-lsa.html">Why Devs Fail LSA</a>
+        </nav>
+      </div>
+    </header>
+    <main>
+      <article class="section blog-article">
+        <div class="container narrow">
+          <p class="eyebrow">Constellation | Architecture</p>
+          <h1>Pega Constellation – Practical Guide</h1>
+          <p class="blog-meta"><time datetime="2026-02-08">February 8, 2026</time></p>
+
+          <h1>Pega Constellation – Practical Guide</h1>
+          <h2>What is Constellation?</h2>
+          <p>Constellation is Pega’s modern UI architecture designed to deliver faster, more consistent, and more maintainable user experiences. It shifts UI responsibility from server-rendered sections to a React-based frontend, while keeping business logic fully inside Pega.</p>
+          <p>**Core idea:** *Model-driven UX with minimal custom UI and maximum upgrade safety.*</p>
+          <p>---</p>
+          <h2>Why Constellation Exists</h2>
+          <p>Traditional Pega UI (Sections, Harnesses) created:</p>
+          <ul>
+          <li>Heavy UI maintenance</li>
+          <li>Upgrade risks due to custom UI</li>
+          <li>Slower DX innovation</li>
+          </ul>
+          <p>Constellation solves this by:</p>
+          <ul>
+          <li>Decoupling UI rendering from server logic</li>
+          <li>Enforcing design consistency</li>
+          <li>Allowing controlled extensibility via DX APIs</li>
+          </ul>
+          <p>---</p>
+          <h2>High-Level Architecture</h2>
+          <h3>Layers</h3>
+          <p>1. **Pega Platform (Backend)** - Case lifecycle - Data pages - Decisioning &amp; rules - Security &amp; access control</p>
+          <p>2. **DX API Layer** - PCore APIs - PConnect APIs - JSON-based UI contracts</p>
+          <p>3. **Constellation UI (Frontend)** - React-based - Design System components - Web &amp; Mobile channels</p>
+          <p>---</p>
+          <h2>Core Principles</h2>
+          <h3>1. Model-Driven UI</h3>
+          <p>UI is derived from:</p>
+          <ul>
+          <li>Views</li>
+          <li>Fields</li>
+          <li>Data relationships</li>
+          </ul>
+          <p>No manual layout coding for standard screens.</p>
+          <h3>2. Upgrade-Safe Customization</h3>
+          <p>Customization happens via:</p>
+          <ul>
+          <li>Custom DX Components</li>
+          <li>React SDK</li>
+          <li>Configuration, not overrides</li>
+          </ul>
+          <h3>3. Omni-Channel by Default</h3>
+          <p>Same case and logic power:</p>
+          <ul>
+          <li>Web portal</li>
+          <li>Mobile apps</li>
+          <li>Embedded experiences</li>
+          </ul>
+          <p>---</p>
+          <h2>Key Building Blocks</h2>
+          <h3>Views</h3>
+          <ul>
+          <li>Replace Sections</li>
+          <li>Declarative layout</li>
+          <li>Field-group driven</li>
+          </ul>
+          <h3>Fields</h3>
+          <ul>
+          <li>Auto-rendered from property metadata</li>
+          <li>Controlled via UI authoring rules</li>
+          </ul>
+          <h3>Data Pages</h3>
+          <ul>
+          <li>Primary data source for UI</li>
+          <li>Drive read-only and editable experiences</li>
+          </ul>
+          <h3>DX APIs</h3>
+          <ul>
+          <li>**PCore**: System-level APIs (case, data, metadata)</li>
+          <li>**PConnect**: Component-level context &amp; actions</li>
+          </ul>
+          <p>---</p>
+          <h2>Custom DX Components</h2>
+          <p>When standard components are not enough:</p>
+          <h3>Use Cases</h3>
+          <ul>
+          <li>Card galleries</li>
+          <li>Advanced tables</li>
+          <li>Charts &amp; visualizations</li>
+          <li>External UI widgets</li>
+          </ul>
+          <h3>Tech Stack</h3>
+          <ul>
+          <li>React</li>
+          <li>TypeScript</li>
+          <li>Pega React SDK</li>
+          </ul>
+          <h3>Rules</h3>
+          <ul>
+          <li>No business logic in UI</li>
+          <li>Consume data via DX APIs</li>
+          <li>Remain stateless where possible</li>
+          </ul>
+          <p>---</p>
+          <h2>What You Should NOT Do</h2>
+          <p>❌ Avoid recreating Section-style UI ❌ Avoid embedding business logic in React ❌ Avoid deep CSS overrides ❌ Avoid bypassing Pega validation</p>
+          <p>---</p>
+          <h2>Migration Mindset (Traditional UI → Constellation)</h2>
+          <p>| Traditional UI | Constellation | |---------------|---------------| | Sections | Views | | Harness | Case Types | | UI Rules | Metadata-driven UI | | Custom HTML | DX Components |</p>
+          <p>Think **re-model**, not lift-and-shift.</p>
+          <p>---</p>
+          <h2>Common Interview Questions</h2>
+          <p>**Q: Is Constellation mandatory?** A: No, but it is the strategic future UI direction.</p>
+          <p>**Q: Can we fully customize UI?** A: Yes, but through controlled extensibility.</p>
+          <p>**Q: Where does validation live?** A: Always in Pega rules, not UI.</p>
+          <p>---</p>
+          <h2>When Constellation is a Perfect Fit</h2>
+          <ul>
+          <li>Greenfield applications</li>
+          <li>Cloud-first deployments</li>
+          <li>DX-focused programs</li>
+          <li>Long-term upgrade stability</li>
+          </ul>
+          <p>---</p>
+          <h2>Final Take</h2>
+          <p>Constellation is not just a UI change—it’s a **mindset shift**:</p>
+          <p>&gt; *Design the experience through intent and metadata, not pixels and HTML.*</p>
+          <p>Mastering Constellation is a must-have skill for modern Pega architects.</p>
+          <p>---</p>
+          <p>*End of document*</p>
+
+
+          <div class="cta-row">
+            <a class="btn btn-primary" href="https://calendar.google.com/calendar/render?action=TEMPLATE" data-booking-type="enterprise" data-analytics-event="blog_post_enterprise_cta" data-analytics-label="pega-constellation-practical-guide" target="_blank" rel="noopener">Discuss this architecture decision</a>
+            <a class="btn btn-secondary" href="index.html">Back to Blog</a>
+          </div>
+        </div>
+      </article>
+    </main>
+    <footer class="site-footer">
+      <div class="container footer-wrap">
+        <p>© <span id="year"></span> PegaGuru. Architecture-first LSA readiness.</p>
+      </div>
+    </footer>
+    <script src="../assets/js/main.js"></script>
+  </body>
+</html>

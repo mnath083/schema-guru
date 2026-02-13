@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SchemaGuard</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <h1>SchemaGuard</h1>
+      <p class="subtitle">Strict Avro compatibility checker</p>
+
+      <form id="compare-form">
+        <label for="old-schema-file">Old schema (JSON)</label>
+        <input id="old-schema-file" name="old_schema_file" type="file" accept=".json,application/json" required />
+
+        <label for="new-schema-file">New schema (JSON)</label>
+        <input id="new-schema-file" name="new_schema_file" type="file" accept=".json,application/json" required />
+
+        <label for="mode">Compatibility mode</label>
+        <select id="mode" name="mode" required>
+          <option value="backward">backward</option>
+          <option value="forward">forward</option>
+          <option value="full">full</option>
+        </select>
+
+        <button id="compare-button" type="submit">Compare</button>
+      </form>
+
+      <section id="result-section" class="hidden">
+        <h2>Result</h2>
+        <div id="result-summary" class="result-summary"></div>
+        <div id="error-list" class="error-list"></div>
+        <button id="toggle-raw-button" class="secondary-button" type="button">Show Raw JSON</button>
+        <pre id="raw-json" class="hidden"></pre>
+      </section>
+    </main>
+
+    <script src="/static/app.js"></script>
+  </body>
+</html>

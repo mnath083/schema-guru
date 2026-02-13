@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://pegaguru.com/sitemap.xml

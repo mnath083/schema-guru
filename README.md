@@ -98,3 +98,7 @@ Incompatible response:
 ```bash
 pytest -q
 ```
+
+## Developer Documentation
+
+- Code walkthrough and architecture notes: [`docs/CODE_DOCUMENTATION.md`](docs/CODE_DOCUMENTATION.md)
